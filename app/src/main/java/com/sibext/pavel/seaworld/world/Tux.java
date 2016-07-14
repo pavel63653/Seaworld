@@ -2,16 +2,18 @@ package com.sibext.pavel.seaworld.world;
 
 import android.util.Log;
 
+import com.sibext.pavel.seaworld.R;
+
 public class Tux extends  Animal {
 
     private int reproductionTime = 0;
 
-    public Tux(World world, int x, int y) {
+    Tux(World world, int x, int y) {
         super(world, x, y);
     }
 
     @Override
-    public void run() {
+    void run() {
         Log.d("Tux","run");
         if(moved)
             return;
@@ -29,11 +31,20 @@ public class Tux extends  Animal {
         }
 
     }
+    boolean isEatable(){
+        return true;
+    }
+
+    @Override
+    public int getImage() {
+        return R.drawable.tux;
+    }
 
     private void create(int x,int y){
         Log.d("Tux","create");
-        field[y][x] = new Tux(world,x,y);
-        ((Animal)field[y][x]).setMoved(true);
+        Tux tux = new Tux(world,x,y);
+        field[y][x].setAnimal(tux);
+        tux.setMoved(true);
     }
 
 

@@ -2,17 +2,19 @@ package com.sibext.pavel.seaworld.world;
 
 import android.util.Log;
 
+import com.sibext.pavel.seaworld.R;
+
 public class Orca extends Animal {
     private final int MAXLIFETIME = 3;
     private final int MAXREPRODUCTIONTIME = 8;
     private int reproductionTime = 0;
     private int lifetime = 0;
-    public Orca(World world, int x, int y) {
+    Orca(World world, int x, int y) {
         super(world, x, y);
     }
 
     @Override
-    public void run() {
+     void run() {
         Log.d("Orca","run");
         if(moved)
             return;
@@ -27,7 +29,8 @@ public class Orca extends Animal {
             }
         }
         if(lifetime >= MAXLIFETIME){
-            field[y][x] = new EmptyCell();
+            field[y][x].setAnimal(null);
+            return;
         }
         if(!moved)
           move();
@@ -41,18 +44,26 @@ public class Orca extends Animal {
             }
         }
     }
+
+    @Override
+    public int getImage() {
+        return R.drawable.orca;
+    }
+
     private boolean checkTux(Route route){
         int x = route.getX()+this.x;
         int y = route.getY()+this.y;
-        if(x > -1 && x < world.getWidth() && y > -1 && y < world.getHeight() && field[y][x] instanceof  Tux){
+        if(x > -1 && x < world.getWidth() && y > -1 && y < world.getHeight() && field[y][x].getAnimal() != null && field[y][x].getAnimal().isEatable()){
             return true;
         }else
             return false;
     }
     private void create(int x,int y){
         Log.d("Orca","create");
-        field[y][x] = new Orca(world,x,y);
-        ((Animal)field[y][x]).setMoved(true);
+        Orca orca = new Orca(world,x,y);
+        orca.setMoved(true);
+        field[y][x].setAnimal(orca);
+
     }
 
 
